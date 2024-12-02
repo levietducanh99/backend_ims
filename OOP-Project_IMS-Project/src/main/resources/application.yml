@@ -1,0 +1,35 @@
+server:
+    port: 8000
+
+spring:
+    application:
+        name: Inventory Management System
+    datasource:
+        url: jdbc:postgresql://dpg-ct6h1q3v2p9s739d0v1g-a:5432/ims_db_da0g
+        username: ims_db_da0g_user
+        password: r2Jz2H18G5PM4EulXPUP7kyWESTQSABT
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        database: postgresql
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                format_sql: true
+                use_sql_comments: true
+    devtools:
+        restart:
+            exclude: src/main/resources/logs/**
+
+#logging:
+#    file:
+#        name: src/main/resources/logs/application.log
+#    level:
+#        jpa: DEBUG
+#        org:
+#            springframework:
+#                security: DEBUG
+#            hibernate:
+#                type: trace
+#                orm.jdbc.bind: trace
