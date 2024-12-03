@@ -18,7 +18,7 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # Sao chép file JAR đã build từ build stage vào container
-COPY --from=build /app/target/pms-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/ims-0.0.1-SNAPSHOT.jar app.jar
 
 # Mở cổng 8080 để có thể truy cập ứng dụng
 EXPOSE 8080
