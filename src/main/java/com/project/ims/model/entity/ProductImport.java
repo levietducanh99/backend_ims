@@ -29,6 +29,8 @@ public class ProductImport {
     @JoinColumn(name = "productID", nullable = false)
     private Product productEntity;
 
-    @Column(nullable = false)
+    @Column(name = "quantity",nullable = false)
     private int quantity;
+    @Column(name = "total_money",nullable = false)
+    private Double totalMoney;
 }

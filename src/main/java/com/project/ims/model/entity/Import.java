@@ -13,8 +13,10 @@ public class Import {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int importID;
 
-    @Column(name = "totalQuantity", nullable = false)
+    @Column(name = "total_quantity", nullable = false)
     private int totalQuantity;
+    @Column(name = "total_money", nullable = false)
+    private Double totalMoney;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "supplierID", nullable = false)
