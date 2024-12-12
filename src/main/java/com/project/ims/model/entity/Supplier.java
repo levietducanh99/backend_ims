@@ -30,10 +30,10 @@ public class Supplier {
 
     @Column(name = "address", nullable = false)
     private String address;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "supplier",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Import> imports;
-
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "SupplierProduct",
