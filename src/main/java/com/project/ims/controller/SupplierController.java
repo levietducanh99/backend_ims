@@ -28,9 +28,9 @@ public class SupplierController {
         return supplierService.findAllDTO();
     }
 
-    @GetMapping("/search")
-    public List<SupplierDTOForShow> searchSuppliersByName(@RequestParam String name) {
-        return supplierService.findByNameContainingDTO(name);
+    @GetMapping("/search/{productID}")
+    public Product findProductById(@PathVariable int productID) {
+        return productService.findByProductId(productID);
     }
     
     @GetMapping("/{supplierId}/products")
