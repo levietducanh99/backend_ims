@@ -28,10 +28,7 @@ public class SupplierController {
         return supplierService.findAllDTO();
     }
 
-    @GetMapping("/search/{productID}")
-    public Product findProductById(@PathVariable int productID) {
-        return productService.findByProductId(productID);
-    }
+
     
     @GetMapping("/{supplierId}/products")
     public List<SupplierProductDTOForShow> getSupplierProducts(@PathVariable int supplierId) {
