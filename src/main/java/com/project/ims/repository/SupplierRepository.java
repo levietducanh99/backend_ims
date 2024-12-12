@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface SupplierRepository extends JpaRepository<Supplier, Integer> {
 	List<Supplier> findByNameContaining(String name);  
 	Optional<Supplier> findBySupplierID(Long supplierID);
+	Optional<Supplier> findByName(String name);
+	
 	// Tìm kiếm nhà cung cấp theo tên
 }
 

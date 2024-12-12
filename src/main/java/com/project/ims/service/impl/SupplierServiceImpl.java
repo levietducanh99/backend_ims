@@ -1,7 +1,11 @@
 package com.project.ims.service.impl;
 
+import com.project.ims.model.dto.ProductDTO;
+import com.project.ims.model.dto.SupplierDTO;
 import com.project.ims.model.dto.SupplierDTOForAddProduct;
 import com.project.ims.model.dto.SupplierDTOForShow;
+import com.project.ims.model.dto.SupplierProductDTOForShow;
+
 import com.project.ims.model.entity.Supplier;
 import com.project.ims.model.entity.Product;
 import com.project.ims.repository.ProductRepository;
@@ -46,11 +50,20 @@ public boolean addSupplier(Supplier supplier) {
     }
 
     @Override
-    public List<Product> getProductsBySupplier(int supplierId) {
+    public List<SupplierProductDTOForShow> getProductsBySupplier(int supplierId) {
         Supplier supplier = supplierRepository.findById(supplierId)
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
-        return supplier.getProducts();
+        
+        return supplier.getProducts().stream()
+                .map(product -> new SupplierProductDTOForShow(
+                        product.getProductID(),
+                        product.getProductName(),
+                        product.getCategory(),
+                        product.getPrice()
+                ))
+                .collect(Collectors.toList());
     }
+
     @Override
     public void addProductToSupplier(int supplierId, int productId) {
         Supplier supplier = supplierRepository.findById(supplierId)
@@ -84,5 +97,29 @@ public boolean addSupplier(Supplier supplier) {
         } else {
             throw new RuntimeException("Product already associated with this supplier.");
         }
+    }
+    @Override
+    public List<SupplierDTO> findAllSimpleDTO() {
+        return supplierRepository.findAll().stream()
+                .map(supplier -> {
+                    SupplierDTO dto = new SupplierDTO();
+                    dto.setSupplierID(supplier.getSupplierID());
+                    dto.setName(supplier.getName());   
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<ProductDTO> getProductsBySupplierSimple(String supplierName) {
+    	Supplier supplier = supplierRepository.findByName(supplierName)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+        return supplier.getProducts().stream()
+                .map(product -> {
+                    ProductDTO dto = new ProductDTO();
+                    dto.setProductID(product.getProductID());
+                    dto.setProductName(product.getProductName());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 }

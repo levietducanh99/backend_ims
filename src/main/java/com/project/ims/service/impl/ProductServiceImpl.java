@@ -1,5 +1,6 @@
 package com.project.ims.service.impl;
 
+import com.project.ims.model.dto.ProductDTO;
 import com.project.ims.model.dto.ProductDTOForShow;
 import com.project.ims.model.dto.SupplierDTOForShow;
 import com.project.ims.model.entity.Product;
@@ -156,5 +157,17 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
-    
+    @Override
+    public List<ProductDTO> getProductsBySupplierSimple(String supplierName) {
+    	Supplier supplier = supplierRepository.findByName(supplierName)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+        return supplier.getProducts().stream()
+                .map(product -> {
+                    ProductDTO dto = new ProductDTO();
+                    dto.setProductID(product.getProductID());
+                    dto.setProductName(product.getProductName());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    } 
 }

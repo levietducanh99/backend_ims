@@ -1,8 +1,11 @@
 package com.project.ims.controller;
 
+import com.project.ims.model.dto.ProductDTO;
+import com.project.ims.model.dto.SupplierDTO;
 import com.project.ims.model.dto.SupplierDTOForAddProduct;
 import com.project.ims.model.dto.SupplierDTOForCreate;
 import com.project.ims.model.dto.SupplierDTOForShow;
+import com.project.ims.model.dto.SupplierProductDTOForShow;
 import com.project.ims.model.entity.Product;
 import com.project.ims.model.entity.Supplier;
 import com.project.ims.service.SupplierService;
@@ -31,7 +34,7 @@ public class SupplierController {
     }
     
     @GetMapping("/{supplierId}/products")
-    public List<Product> getSupplierProducts(@PathVariable int supplierId) {
+    public List<SupplierProductDTOForShow> getSupplierProducts(@PathVariable int supplierId) {
         return supplierService.getProductsBySupplier(supplierId);
     }
     @PostMapping("/{supplierId}/products/{productId}")
@@ -69,5 +72,13 @@ public class SupplierController {
         } else {
             return ResponseEntity.status(400).body("Lỗi khi thêm nhà cung cấp");
         }
+    }
+    @GetMapping()
+    public List<SupplierDTO> getSuppliers() {
+        return supplierService.findAllSimpleDTO();
+    }
+    @GetMapping("/{supplierName}")
+    public List<ProductDTO> getProductsBySupplier(@PathVariable String supplierName) {
+        return supplierService.getProductsBySupplierSimple(supplierName);
     }
 }
