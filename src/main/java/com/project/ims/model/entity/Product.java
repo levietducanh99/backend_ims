@@ -53,13 +53,13 @@ public class Product {
     @Column(name = "quantity", nullable = false, columnDefinition = "int default 1")
     @NonNull
     private Integer quantity;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductImport> productImports;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductExport> productExports;
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "products")
     @ToString.Exclude
     private List<Supplier> suppliers;
