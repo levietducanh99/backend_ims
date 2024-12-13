@@ -35,7 +35,7 @@ public class SupplierController {
     }
    
     @GetMapping("/search/{supplierId}")
-    public  Optional<Supplier> searchSuppliersById(@RequestParam int supplierId) {
+    public  Optional<Supplier> searchSuppliersById(@PathVariable int supplierId) {
         return supplierService.findbyidSupplier(supplierId);
     }
     
