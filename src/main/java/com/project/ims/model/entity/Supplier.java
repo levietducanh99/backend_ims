@@ -13,9 +13,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+<<<<<<< HEAD
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+=======
+import com.fasterxml.jackson.annotation.JsonIgnore;
+>>>>>>> 74b755a587865e3938a4f93b690440249ca5f7ff
 @Data
 @Entity
 @Table(name = "supplier")

@@ -29,6 +29,7 @@ public class SupplierController {
         return supplierService.findAllDTO();
     }
 
+<<<<<<< HEAD
     @GetMapping("/search")
     public List<SupplierDTOForShow> searchSuppliersByName(@RequestParam String name) {
         return supplierService.findByNameContainingDTO(name);
@@ -38,6 +39,9 @@ public class SupplierController {
     public  Optional<Supplier> searchSuppliersById(@RequestParam int supplierId) {
         return supplierService.findbyidSupplier(supplierId);
     }
+=======
+
+>>>>>>> 74b755a587865e3938a4f93b690440249ca5f7ff
     
     @GetMapping("/{supplierId}/products")
     public List<SupplierProductDTOForShow> getSupplierProducts(@PathVariable int supplierId) {
