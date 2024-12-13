@@ -31,9 +31,9 @@ public class ProductController {
         return productService.findByProductId(id);
     }
 
-    @GetMapping("/search/{id}")
-    public Product findProductById2(@PathVariable int id) {
-        return productService.findByProductId(id);
+    @GetMapping("/search/{productID}")
+    public Product findProductById2(@PathVariable int productID) {
+        return productService.findByProductId(productID);
     }
 
     @GetMapping("/filter")

@@ -9,6 +9,7 @@ import com.project.ims.model.entity.Product;
 import com.project.ims.model.entity.Supplier;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SupplierService {
     List<SupplierDTOForShow> findAllDTO();
@@ -19,4 +20,5 @@ public interface SupplierService {
 	boolean addSupplier(Supplier supplier);
 	  List<SupplierDTO> findAllSimpleDTO();
 	List<ProductDTO> getProductsBySupplierSimple(String supplierName);
+	Optional<Supplier> findbyidSupplier(int supplierID);
 }

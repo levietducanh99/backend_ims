@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/suppliers")
@@ -31,6 +32,11 @@ public class SupplierController {
     @GetMapping("/search")
     public List<SupplierDTOForShow> searchSuppliersByName(@RequestParam String name) {
         return supplierService.findByNameContainingDTO(name);
+    }
+   
+    @GetMapping("/search/{supplierId}")
+    public  Optional<Supplier> searchSuppliersById(@RequestParam int supplierId) {
+        return supplierService.findbyidSupplier(supplierId);
     }
     
     @GetMapping("/{supplierId}/products")

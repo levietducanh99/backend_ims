@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /*
 CREATE TABLE Product (
@@ -53,13 +54,13 @@ public class Product {
     @Column(name = "quantity", nullable = false, columnDefinition = "int default 1")
     @NonNull
     private Integer quantity;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductImport> productImports;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductExport> productExports;
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "products")
     @ToString.Exclude
     private List<Supplier> suppliers;
