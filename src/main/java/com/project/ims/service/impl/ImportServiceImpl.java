@@ -70,6 +70,7 @@ public class ImportServiceImpl implements ImportService {
 
         // Chuyển đổi lại ImportEntity sang DTO để trả về
         ImportDTO result = new ImportDTO();
+        result.setImportID(importEntity.getImportID());
         result.setQuantities(importDTO.getQuantities());
         result.setTotalMoney(importDTO.getTotalMoney());
         result.setTotalQuantity(importDTO.getTotalQuantity());

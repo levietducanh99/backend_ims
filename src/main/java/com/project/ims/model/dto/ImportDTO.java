@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class ImportDTO {
+	private int importID;
     private List<String> quantities;       // Danh sách số lượng của từng sản phẩm
     private Double totalMoney;        // Tổng số tiền, dùng BigDecimal để lưu trữ giá trị tiền tệ
     private int totalQuantity;            // Tổng số lượng sản phẩm
