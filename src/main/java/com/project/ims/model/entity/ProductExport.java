@@ -22,6 +22,4 @@ public class ProductExport {
 
     @Column(nullable = false)
     private int quantity;
-    @Column(name = "total_money",nullable = false)
-    private Double totalMoney;
 }
