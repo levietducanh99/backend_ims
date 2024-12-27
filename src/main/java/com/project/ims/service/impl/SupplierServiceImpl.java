@@ -81,6 +81,25 @@ public boolean addSupplier(Supplier supplier) {
             throw new RuntimeException("Product already associated with this supplier.");
         }
     }
+    @Override
+    public void removeProductFromSupplier(int supplierId, int productId) {
+        // Tìm nhà cung cấp
+        Supplier supplier = supplierRepository.findById(supplierId)
+                .orElseThrow(() -> new RuntimeException("Supplier not found with ID: " + supplierId));
+
+        // Tìm sản phẩm
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
+
+        // Kiểm tra xem sản phẩm có trong danh sách sản phẩm của nhà cung cấp không
+        if (supplier.getProducts().contains(product)) {
+            supplier.getProducts().remove(product); // Xóa sản phẩm khỏi danh sách
+            supplierRepository.save(supplier); // Lưu cập nhật nhà cung cấp
+        } else {
+            throw new RuntimeException("Product is not associated with this supplier.");
+        }
+    }
+
     public void addProductToSupplier(SupplierDTOForAddProduct request) {
         int supplierId = request.getSupplierId();
         int productId = request.getProductId();

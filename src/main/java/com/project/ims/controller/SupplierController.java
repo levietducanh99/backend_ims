@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -87,4 +88,16 @@ public class SupplierController {
     public List<ProductDTO> getProductsBySupplier(@PathVariable String supplierName) {
         return supplierService.getProductsBySupplierSimple(supplierName);
     }
+    @DeleteMapping("/{supplierId}/products/{productId}")
+    public ResponseEntity<?> removeProductFromSupplier(
+            @PathVariable int supplierId,
+            @PathVariable int productId) {
+        try {
+            supplierService.removeProductFromSupplier(supplierId, productId);
+            return ResponseEntity.ok(Map.of("message", "Sản phẩm đã được xóa khỏi danh sách nhà cung cấp."));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
 }
