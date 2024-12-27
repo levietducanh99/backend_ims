@@ -3,15 +3,7 @@ package com.project.ims.model.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-/*
-CREATE TABLE ProductImport (
-    importID INT PRIMARY KEY,
-    productID INT PRIMARY KEY,
-    quantity INT,
-    FOREIGN KEY (productID) REFERENCES Product(productID),
-    FOREIGN KEY (importID) REFERENCES Import(importID)
-);
- */
+
 
 @Data
 @Entity
