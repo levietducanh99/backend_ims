@@ -19,4 +19,6 @@ public interface PartnerService {
     Optional<Partner> findByIdPartner(int partnerID);
 
 	void deletePartner(int partnerID);
+
+	Optional<Partner> findById(int partnerId);
 }

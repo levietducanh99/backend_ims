@@ -69,5 +69,9 @@ public class PartnerServiceImpl implements PartnerService {
             throw new RuntimeException("Partner not found with ID: " + partnerID);
         }
     }
+    @Override
+    public Optional<Partner> findById(int partnerId) {
+        return partnerRepository.findById(partnerId);
+    }
 
 }
