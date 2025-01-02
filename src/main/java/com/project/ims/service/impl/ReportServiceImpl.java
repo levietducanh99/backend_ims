@@ -103,6 +103,7 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+
     private List<Object[]> executeQuery(String sql, String type, String period, int year, Integer month) {
         var query = entityManager.createNativeQuery(sql);
         

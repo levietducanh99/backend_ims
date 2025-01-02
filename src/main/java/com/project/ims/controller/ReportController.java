@@ -38,11 +38,16 @@ public class ReportController {
             @RequestParam String period,
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) Integer month) {
-        
+
         if (year == null) {
             year = Year.now().getValue();
         }
-        
+
+        // Check if the period is "week" and month is required
+        if ("week".equals(period) && month == null) {
+            return ResponseEntity.badRequest().body(null); // Return an error if month is required for weeks
+        }
+
         ProductStatisticsDTO statistics = reportService.getStatisticsByProduct(type, productId, period, year, month);
         return ResponseEntity.ok(statistics);
     }
