@@ -39,16 +39,20 @@ public class ReportController {
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) Integer month) {
 
+        // Log or print the period value for debugging
+        System.out.println("Received period: " + period);
+
         if (year == null) {
             year = Year.now().getValue();
         }
 
-        // Check if the period is "week" and month is required
-        if ("week".equals(period) && month == null) {
-            return ResponseEntity.badRequest().body(null); // Return an error if month is required for weeks
+        // Check if the period is "day" and month is required
+        if ("day".equals(period) && month == null) {
+            return ResponseEntity.badRequest().body(null); // Return an error if month is required for days
         }
 
         ProductStatisticsDTO statistics = reportService.getStatisticsByProduct(type, productId, period, year, month);
         return ResponseEntity.ok(statistics);
     }
+
 }

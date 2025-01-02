@@ -81,27 +81,36 @@ public class ReportServiceImpl implements ReportService {
         String joinColumn = type.equals("import") ? "importid" : "exportid";
         
         switch (period) {
-            case "week":
-                return "SELECT EXTRACT(WEEK FROM i.\"createDate\") as period_num, SUM(id.quantity) as quantity " +
+            case "day":
+                // Query for daily statistics within a specific month
+                return "SELECT EXTRACT(DAY FROM i.\"createDate\") AS period_num, " +
+                       "SUM(id.\"quantity\") AS quantity " +  // Using SUM to calculate the total quantity
                        "FROM \"" + tableName + "\" id " +
                        "JOIN \"" + joinTable + "\" i ON id.\"" + joinColumn + "\" = i.\"" + joinColumn + "\" " +
-                       "WHERE id.\"productid\" = ?1 " +
-                       "AND EXTRACT(YEAR FROM i.\"createDate\") = ?2 " +
-                       "AND EXTRACT(MONTH FROM i.\"createDate\") = ?3 " +
-                       "GROUP BY EXTRACT(WEEK FROM i.\"createDate\") " +
-                       "ORDER BY period_num";
+                       "WHERE id.\"productid\" = ?1 " +  // Product ID filter
+                       "AND EXTRACT(YEAR FROM i.\"createDate\") = ?2 " +  // Year filter
+                       "AND EXTRACT(MONTH FROM i.\"createDate\") = ?3 " +  // Month filter
+                       "GROUP BY EXTRACT(DAY FROM i.\"createDate\") " +  // Group by each day in the month
+                       "ORDER BY period_num";  // Order by day of the month
             case "month":
-                return "SELECT EXTRACT(MONTH FROM i.\"createDate\") as period_num, SUM(id.quantity) as quantity " +
+                // Query for monthly statistics (sum of quantities)
+                return "SELECT EXTRACT(MONTH FROM i.\"createDate\") AS period_num, " +
+                       "SUM(id.quantity) AS quantity " +
                        "FROM \"" + tableName + "\" id " +
                        "JOIN \"" + joinTable + "\" i ON id.\"" + joinColumn + "\" = i.\"" + joinColumn + "\" " +
-                       "WHERE id.\"productid\" = ?1 " +
-                       "AND EXTRACT(YEAR FROM i.\"createDate\") = ?2 " +
-                       "GROUP BY EXTRACT(MONTH FROM i.\"createDate\") " +
-                       "ORDER BY period_num";
+                       "WHERE id.\"productid\" = ?1 " +  // Product ID filter
+                       "AND EXTRACT(YEAR FROM i.\"createDate\") = ?2 " +  // Year filter
+                       "GROUP BY EXTRACT(MONTH FROM i.\"createDate\") " +  // Group by month
+                       "ORDER BY period_num";  // Order by month
             default:
-                throw new IllegalArgumentException("Invalid period: " + period);
+                throw new IllegalArgumentException("Invalid period: " + period);  // Handle invalid period
         }
     }
+
+
+
+
+
 
 
     private List<Object[]> executeQuery(String sql, String type, String period, int year, Integer month) {
@@ -119,15 +128,20 @@ public class ReportServiceImpl implements ReportService {
 
     private List<Object[]> executeProductQuery(String sql, String type, int productId, String period, int year, Integer month) {
         var query = entityManager.createNativeQuery(sql)
-            .setParameter(1, productId)
-            .setParameter(2, year);
-            
-        if (period.equals("week")) {
-            query.setParameter(3, month);
+                .setParameter(1, productId)
+                .setParameter(2, year);
+        
+        // Set month parameter for 'day' and 'week' periods
+        if ("day".equals(period) || "week".equals(period)) {
+            if (month == null) {
+                throw new IllegalArgumentException("Month must be provided for 'day' or 'week' period.");
+            }
+            query.setParameter(3, month); // Set month for both 'day' and 'week'
         }
         
         return query.getResultList();
     }
+
 
     private List<PeriodDataDTO> mapPeriodData(List<Object[]> results, String period) {
         List<PeriodDataDTO> data = new ArrayList<>();
@@ -154,18 +168,25 @@ public class ReportServiceImpl implements ReportService {
         
         for (Object[] result : results) {
             ProductPeriodDataDTO dto = new ProductPeriodDataDTO();
-            int periodNum = ((Number) result[0]).intValue();
-            int quantity = ((Number) result[1]).intValue();
-            
-            if (period.equals("week")) {
-                dto.setWeek(periodNum);
-            } else if (period.equals("month")) {
-                dto.setMonth(periodNum);
+            int periodNum = ((Number) result[0]).intValue();  // Extract the period number (day, week, or month)
+            int quantity = ((Number) result[1]).intValue();  // Extract the quantity
+
+            // Handle the period-based assignment
+            if ("day".equals(period)) {
+                dto.setDay(periodNum);  // Only set the day for "day" period
+            } else if ("week".equals(period)) {
+                dto.setWeek(periodNum);  // Set the week for "week" period
+            } else if ("month".equals(period)) {
+                dto.setMonth(periodNum);  // Set the month for "month" period
             }
-            dto.setQuantity(quantity);
+            
+            dto.setQuantity(quantity);  // Always set the quantity
             data.add(dto);
         }
         
         return data;
     }
+
+
+
 }
