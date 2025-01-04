@@ -12,14 +12,12 @@ server:
 
 spring:
     application:
-        name: PMS
+        name: Inventory Management System
     datasource:
-        url: jdbc:postgresql://160.191.50.248:5432/pms_db
-        username: postgres
-        password: 20226100
+        url: jdbc:postgresql://dpg-ctrbr7i3esus73bbe6h0-a.singapore-postgres.render.com/ims_dvt0
+        username: ims_user
+        password: DHfZtLR3R1oWjAKob3D7UgALXHaAs26L
         driver-class-name: org.postgresql.Driver
-        hikari:
-            auto-commit: false
     jpa:
         database: postgresql
         show-sql: true
@@ -27,11 +25,20 @@ spring:
             ddl-auto: update
         properties:
             hibernate:
-                dialect: org.hibernate.dialect.PostgreSQLDialect
                 format_sql: true
-                jdbc:
-                    time_zone: UTC+7
-    jackson:
-        serialization:
-            WRITE_DATES_AS_TIMESTAMPS: false
-        time-zone: Asia/Ho_Chi_Minh
+                use_sql_comments: true
+    devtools:
+        restart:
+            exclude: src/main/resources/logs/**
+
+#logging:
+#    file:
+#        name: src/main/resources/logs/application.log
+#    level:
+#        jpa: DEBUG
+#        org:
+#            springframework:
+#                security: DEBUG
+#            hibernate:
+#                type: trace
+#                orm.jdbc.bind: trace
