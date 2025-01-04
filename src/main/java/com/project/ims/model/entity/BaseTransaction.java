@@ -2,13 +2,11 @@ package com.project.ims.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @MappedSuperclass
 public abstract class BaseTransaction {
-
 
     @Column(name = "total_quantity", nullable = false)
     private int totalQuantity;
@@ -16,5 +14,11 @@ public abstract class BaseTransaction {
     @Column(name = "total_money", nullable = false)
     private Double totalMoney;
 
-    // Quan hệ ManyToOne sẽ được cụ thể hóa ở các lớp con (Export, Import)
+    @Column(name = "create_date",updatable = false)
+    private LocalDateTime createDate;
+
+    @PrePersist
+    protected void onCreate() {
+        createDate = LocalDateTime.now();
+    }
 }

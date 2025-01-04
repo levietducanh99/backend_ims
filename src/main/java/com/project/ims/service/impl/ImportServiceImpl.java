@@ -1,5 +1,6 @@
 package com.project.ims.service.impl;
 
+import com.project.ims.model.dto.FilterImportDTO;
 import com.project.ims.model.dto.ImportDTO;
 import com.project.ims.model.dto.ProductImportDTO;
 import com.project.ims.model.entity.Import;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,10 +78,55 @@ public class ImportServiceImpl implements ImportService {
         result.setTotalQuantity(importDTO.getTotalQuantity());
         result.setSupplierID(importDTO.getSupplierID());
         result.setProductIDs(importDTO.getProductIDs());
+        result.setCreateDate(importEntity.getCreateDate());
 
         return result;
     }
+@Override
+    public ImportDTO getImportDetails(int importID) {
+        Import importEntity = importRepository.findById(importID)
+            .orElseThrow(() -> new RuntimeException("Import not found"));
 
+        List<ProductImportDTO> productImports = importEntity.getProductImports().stream()
+            .map(productImport -> {
+                ProductImportDTO dto = new ProductImportDTO();
+                dto.setProductID(productImport.getProductEntity().getProductID());
+                dto.setProductName(productImport.getProductEntity().getProductName());
+                dto.setQuantity(productImport.getQuantity());
+                dto.setTotalMoney(productImport.getTotalMoney());
+                return dto;
+            }).collect(Collectors.toList());
+
+        ImportDTO result = new ImportDTO();
+        result.setImportID(importEntity.getImportID());
+        result.setTotalQuantity(importEntity.getTotalQuantity());
+        result.setTotalMoney(importEntity.getTotalMoney());
+        result.setSupplierID(String.valueOf(importEntity.getSupplier().getSupplierID()));
+        result.setProductImports(productImports); // Gán danh sách sản phẩm vào DTO
+        result.setCreateDate(importEntity.getCreateDate());
+        return result;
+    }
+@Override
+public List<FilterImportDTO> filterImports(LocalDateTime startDate, LocalDateTime endDate, Integer supplierId, Integer minProductQuantity, Integer maxProductQuantity) {
+    return importRepository.findFilteredImports(startDate, endDate, supplierId, minProductQuantity, maxProductQuantity)
+        .stream()
+        .map(importEntity -> {
+            FilterImportDTO dto = new FilterImportDTO();
+            dto.setImportID(importEntity.getImportID());
+            dto.setSupplierName(importEntity.getSupplier().getName());
+            dto.setTotalQuantity(importEntity.getTotalQuantity());
+            dto.setTotalMoney(importEntity.getTotalMoney());
+            dto.setCreateDate(importEntity.getCreateDate());
+         // Trích xuất danh sách productIds từ ProductImport
+            List<String> productIds = importEntity.getProductImports().stream()
+                .map(productImport -> String.valueOf(productImport.getProductEntity().getProductID())) // Lấy productId từ ProductEntity
+                .collect(Collectors.toList());
+            
+            dto.setProductIDs(productIds);
+            return dto;
+        })
+        .collect(Collectors.toList());
+}
 
 
 }

@@ -1,6 +1,7 @@
 package com.project.ims.service.impl;
 
 import com.project.ims.model.dto.ExportDTO;
+import com.project.ims.model.dto.FilterExportDTO;
 import com.project.ims.model.dto.ProductExportDTO;
 import com.project.ims.model.entity.Export;
 import com.project.ims.model.entity.Partner;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -123,4 +125,51 @@ public class ExportServiceImpl implements ExportService {
                 })
                 .collect(Collectors.toList());
     }
+    @Override
+    public ExportDTO getExportDetails(int exportID) {
+        Export exportEntity = exportRepository.findById(exportID)
+            .orElseThrow(() -> new RuntimeException("Export not found"));
+
+        List<ProductExportDTO> productExports = exportEntity.getProductExports().stream()
+            .map(productExport -> {
+                ProductExportDTO dto = new ProductExportDTO();
+                dto.setProductID(productExport.getProductEntity().getProductID());
+                dto.setProductName(productExport.getProductEntity().getProductName());
+                dto.setQuantity(productExport.getQuantity());
+                dto.setTotalMoney(productExport.getTotalMoney());
+                
+                return dto;
+            }).collect(Collectors.toList());
+
+        ExportDTO result = new ExportDTO();
+        result.setExportID(exportEntity.getExportID());
+        result.setTotalQuantity(exportEntity.getTotalQuantity());
+        result.setTotalMoney(exportEntity.getTotalMoney());
+        result.setPartnerID(String.valueOf(exportEntity.getPartner().getPartnerID()));
+        result.setProductExports(productExports); // Gán danh sách sản phẩm vào DTO
+        result.setCreateDate(exportEntity.getCreateDate());
+        return result;
+    }
+    @Override
+    public List<FilterExportDTO> filterExports(LocalDateTime startDate, LocalDateTime endDate, Integer partnerId, Integer minProductQuantity, Integer maxProductQuantity) {
+        return exportRepository.findFilteredExports(startDate, endDate, partnerId, minProductQuantity, maxProductQuantity)
+            .stream()
+            .map(exportEntity -> {
+                FilterExportDTO dto = new FilterExportDTO();
+                dto.setExportID(exportEntity.getExportID());
+                dto.setPartnerName(exportEntity.getPartner().getName());
+                dto.setTotalQuantity(exportEntity.getTotalQuantity());
+                dto.setTotalMoney(exportEntity.getTotalMoney());
+                dto.setCreateDate(exportEntity.getCreateDate());
+             // Trích xuất danh sách productIds từ ProductExport
+                List<String> productIds = exportEntity.getProductExports().stream()
+                    .map(productExport -> String.valueOf(productExport.getProductEntity().getProductID())) // Lấy productId từ ProductEntity
+                    .collect(Collectors.toList());
+                
+                dto.setProductIDs(productIds);
+                return dto;
+            })
+            .collect(Collectors.toList());
+    }
+
 }
