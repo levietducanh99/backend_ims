@@ -57,16 +57,23 @@ public class ImportServiceImpl implements ImportService {
         for (int i = 0; i < importDTO.getProductIDs().size(); i++) {
             String productId = importDTO.getProductIDs().get(i);
             int quantity = Integer.parseInt(importDTO.getQuantities().get(i));
-
+            
             Product product = productRepository.findById(Integer.parseInt(productId))
                     .orElseThrow(() -> new RuntimeException("Product not found"));
-
+            // Kiểm tra xem sản phẩm đã có trong danh sách của Supplier chưa
+            if (!supplier.getProducts().contains(product)) {
+                // Nếu chưa có, thêm sản phẩm vào danh sách của Supplier
+                supplier.getProducts().add(product);
+            }
             ProductImport productImport = new ProductImport();
             productImport.setProductEntity(product);
             productImport.setQuantity(quantity);
             productImport.setImportEntity(importEntity);
             productImport.setTotalMoney(quantity * product.getPrice()); // Tổng tiền từng sản phẩm
             productImports.add(productImport);
+            // Cập nhật quantity của sản phẩm trong bảng Product
+            product.setQuantity(product.getQuantity() + quantity);
+            productRepository.save(product);
         }
         productImportRepository.saveAll(productImports);
 

@@ -20,7 +20,7 @@ public class Supplier extends Person {
     private List<Import> imports;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "SupplierProduct",
             joinColumns = @JoinColumn(name = "supplierID"),

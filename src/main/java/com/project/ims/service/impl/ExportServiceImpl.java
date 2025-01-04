@@ -67,6 +67,14 @@ public class ExportServiceImpl implements ExportService {
             productExport.setExportEntity(exportEntity);
             productExport.setTotalMoney(quantity * product.getPrice()); // Tổng tiền cho từng sản phẩm
             productExports.add(productExport);
+            // Cập nhật quantity của sản phẩm trong bảng Product (giảm số lượng)
+            if (product.getQuantity() >= quantity) {
+                product.setQuantity(product.getQuantity() - quantity);
+                productRepository.save(product);
+            } else {
+                throw new RuntimeException("Not enough quantity for product: " + product.getProductID());
+            }
+        
         }
         productExportRepository.saveAll(productExports);
 
