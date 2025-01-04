@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.ims.model.entity.Supplier;
 
 @Data
@@ -20,5 +21,6 @@ public class ImportDTO {
     private List<String> productIDs;      // Danh sách ID sản phẩm
     private List<ProductImportDTO> productImports; // Danh sách chi tiết sản phẩm nhập trong phiếu
     private LocalDateTime createDate;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Supplier supplier;
 }

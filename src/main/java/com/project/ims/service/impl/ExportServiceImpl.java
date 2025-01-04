@@ -149,7 +149,7 @@ public class ExportServiceImpl implements ExportService {
         result.setPartnerID(String.valueOf(exportEntity.getPartner().getPartnerID()));
         result.setProductExports(productExports); // Gán danh sách sản phẩm vào DTO
         result.setCreateDate(exportEntity.getCreateDate());
-        
+        result.setPartner(exportEntity.getPartner());
         return result;
     }
     @Override
