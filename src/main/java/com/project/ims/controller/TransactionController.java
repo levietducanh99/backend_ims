@@ -34,8 +34,9 @@ public class TransactionController {
     @GetMapping("/filter")
     public ResponseEntity<?> filterTransactions(
         @RequestParam String type,  
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+        
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
         @RequestParam(required = false) Integer supplierId,
         @RequestParam(required = false) Integer partnerId,
         @RequestParam(required = false) Integer minProductQuantity,
