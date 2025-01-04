@@ -5,6 +5,7 @@ import com.project.ims.service.ExportService;
 import com.project.ims.service.ImportService;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -39,7 +40,14 @@ public class TransactionController {
         @RequestParam(required = false) Integer partnerId,
         @RequestParam(required = false) Integer minProductQuantity,
         @RequestParam(required = false) Integer maxProductQuantity) {
-
+    	 // Set default to the current year if startDate or endDate is null
+        if (startDate == null) {
+            startDate = LocalDateTime.of(2024, Month.JANUARY, 1, 0, 0);
+        }
+        
+        if (endDate == null) {
+            endDate = LocalDateTime.of(2024, Month.DECEMBER, 31, 23, 59);
+        }
         if ("import".equalsIgnoreCase(type)) {
             return ResponseEntity.ok(importService.filterImports(startDate, endDate, supplierId, minProductQuantity, maxProductQuantity));
         } else if ("export".equalsIgnoreCase(type)) {
