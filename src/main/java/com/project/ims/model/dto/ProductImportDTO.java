@@ -8,5 +8,5 @@ public class ProductImportDTO {
     private int productID;
     private int quantity;
     private Double totalMoney;
-    private Double productMoney;
+    private Double price;
 }

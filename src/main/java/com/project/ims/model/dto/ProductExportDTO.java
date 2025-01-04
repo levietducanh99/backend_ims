@@ -8,5 +8,5 @@ public class ProductExportDTO {
     private String productName;
     private int quantity;
     private Double totalMoney;
-    private Double productMoney;
+    private Double price;
 }

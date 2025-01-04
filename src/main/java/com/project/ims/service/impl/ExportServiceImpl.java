@@ -137,7 +137,7 @@ public class ExportServiceImpl implements ExportService {
                 dto.setProductName(productExport.getProductEntity().getProductName());
                 dto.setQuantity(productExport.getQuantity());
                 dto.setTotalMoney(productExport.getTotalMoney());
-                dto.setProductMoney(productExport.getProductEntity().getPrice());
+                dto.setPrice(productExport.getProductEntity().getPrice());
                 
                 return dto;
             }).collect(Collectors.toList());

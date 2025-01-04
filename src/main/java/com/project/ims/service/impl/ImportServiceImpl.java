@@ -94,7 +94,7 @@ public class ImportServiceImpl implements ImportService {
                 dto.setProductName(productImport.getProductEntity().getProductName());
                 dto.setQuantity(productImport.getQuantity());
                 dto.setTotalMoney(productImport.getTotalMoney());
-                dto.setProductMoney(productImport.getProductEntity().getPrice());
+                dto.setPrice(productImport.getProductEntity().getPrice());
                 return dto;
             }).collect(Collectors.toList());
 
