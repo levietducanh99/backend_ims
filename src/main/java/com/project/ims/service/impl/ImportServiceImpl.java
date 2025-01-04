@@ -94,6 +94,7 @@ public class ImportServiceImpl implements ImportService {
                 dto.setProductName(productImport.getProductEntity().getProductName());
                 dto.setQuantity(productImport.getQuantity());
                 dto.setTotalMoney(productImport.getTotalMoney());
+                dto.setProductMoney(productImport.getProductEntity().getPrice());
                 return dto;
             }).collect(Collectors.toList());
 
@@ -104,6 +105,7 @@ public class ImportServiceImpl implements ImportService {
         result.setSupplierID(String.valueOf(importEntity.getSupplier().getSupplierID()));
         result.setProductImports(productImports); // Gán danh sách sản phẩm vào DTO
         result.setCreateDate(importEntity.getCreateDate());
+        result.setSupplier(importEntity.getSupplier());
         return result;
     }
 @Override

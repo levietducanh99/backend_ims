@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.ims.model.entity.Partner;
+import com.project.ims.model.entity.Supplier;
 
 @Data
 public class ExportDTO {
@@ -19,4 +21,5 @@ public class ExportDTO {
     private List<String> quantities; // Số lượng của từng sản phẩm
     private List<ProductExportDTO> productExports; // Danh sách chi tiết sản phẩm nhập trong phiếu
     private LocalDateTime createDate;
+    private Partner partner;
 }

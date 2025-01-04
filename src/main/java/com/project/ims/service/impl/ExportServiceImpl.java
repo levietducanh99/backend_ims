@@ -137,6 +137,7 @@ public class ExportServiceImpl implements ExportService {
                 dto.setProductName(productExport.getProductEntity().getProductName());
                 dto.setQuantity(productExport.getQuantity());
                 dto.setTotalMoney(productExport.getTotalMoney());
+                dto.setProductMoney(productExport.getProductEntity().getPrice());
                 
                 return dto;
             }).collect(Collectors.toList());
@@ -148,6 +149,7 @@ public class ExportServiceImpl implements ExportService {
         result.setPartnerID(String.valueOf(exportEntity.getPartner().getPartnerID()));
         result.setProductExports(productExports); // Gán danh sách sản phẩm vào DTO
         result.setCreateDate(exportEntity.getCreateDate());
+        
         return result;
     }
     @Override
