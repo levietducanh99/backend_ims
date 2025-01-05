@@ -116,7 +116,7 @@ public class ImportServiceImpl implements ImportService {
         return result;
     }
 @Override
-public List<FilterImportDTO> filterImports(LocalDateTime startDate, LocalDateTime endDate, Integer supplierId, Integer minProductQuantity, Integer maxProductQuantity) {
+public List<FilterImportDTO> filterImports(LocalDateTime startDate, LocalDateTime endDate, int supplierId, Integer minProductQuantity, Integer maxProductQuantity) {
     return importRepository.findFilteredImports(startDate, endDate, supplierId, minProductQuantity, maxProductQuantity)
         .stream()
         .map(importEntity -> {

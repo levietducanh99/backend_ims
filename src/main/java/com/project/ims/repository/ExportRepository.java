@@ -15,6 +15,6 @@ public interface ExportRepository extends JpaRepository<Export, Integer> {
             "AND (:partnerId IS NULL OR e.partner.partnerID = :partnerId) " +
             "AND (:minProductQuantity IS NULL OR e.totalQuantity >= :minProductQuantity) " +
             "AND (:maxProductQuantity IS NULL OR e.totalQuantity <= :maxProductQuantity)")
-     List<Export> findFilteredExports(LocalDateTime startDate, LocalDateTime endDate, Integer partnerId, Integer minProductQuantity, Integer maxProductQuantity);
+     List<Export> findFilteredExports(LocalDateTime startDate, LocalDateTime endDate, int partnerId, Integer minProductQuantity, Integer maxProductQuantity);
  }
 

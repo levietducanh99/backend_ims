@@ -13,6 +13,6 @@ public interface ImportService {
 
 	
 
-	List<FilterImportDTO> filterImports(LocalDateTime startDate, LocalDateTime endDate, Integer supplierId,
+	List<FilterImportDTO> filterImports(LocalDateTime startDate, LocalDateTime endDate, int supplierId,
 			Integer minProductQuantity, Integer maxProductQuantity);
 }
