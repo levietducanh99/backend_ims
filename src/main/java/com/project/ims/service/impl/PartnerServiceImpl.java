@@ -26,13 +26,12 @@ public class PartnerServiceImpl implements PartnerService {
     }
 
     @Override
-    public boolean addPartner(Partner partner) {
+    public Partner addPartner(Partner partner) {
         try {
-            partnerRepository.save(partner); // Lưu đối tác vào cơ sở dữ liệu
-            return true;
+            return partnerRepository.save(partner);
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            // Xử lý ngoại lệ chi tiết hơn, ví dụ: log lỗi, throw custom exception
+            throw new RuntimeException("Lỗi khi thêm đối tác", e);
         }
     }
 

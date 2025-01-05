@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface PartnerService {
     List<PartnerDTOForShow> findAllDTO();
 
-    boolean addPartner(Partner partner);
+    Partner addPartner(Partner partner);
 
     List<PartnerDTOForShow> findByNameContainingDTO(String name);
 
