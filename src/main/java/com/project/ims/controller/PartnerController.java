@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,7 +39,9 @@ public class PartnerController {
 
     // Phương thức để thêm đối tác
     @PostMapping
-    public ResponseEntity<String> addPartner(@RequestBody PartnerDTOForCreate partnerDTO) {
+    public ResponseEntity<Map<String, Object>> addPartner(@RequestBody PartnerDTOForCreate partnerDTO) {
+        Map<String, Object> response = new HashMap<>();
+
         // Chuyển đổi PartnerDTO thành đối tượng Partner
         Partner newPartner = new Partner();
         newPartner.setName(partnerDTO.getName());
@@ -49,11 +52,16 @@ public class PartnerController {
         boolean isAdded = partnerService.addPartner(newPartner);
 
         if (isAdded) {
-            return ResponseEntity.ok("Đối tác đã được thêm thành công");
+            response.put("success", true);
+            response.put("message", "Đối tác đã được thêm thành công");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(400).body("Lỗi khi thêm đối tác");
+            response.put("success", false);
+            response.put("message", "Lỗi khi thêm đối tác");
+            return ResponseEntity.status(400).body(response);
         }
     }
+
 
     @GetMapping()
     public List<PartnerDTO> getPartners() {

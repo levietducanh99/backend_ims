@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -64,7 +65,9 @@ public class SupplierController {
     }
  // Phương thức để thêm nhà cung cấp
     @PostMapping
-    public ResponseEntity<String> addSupplier(@RequestBody SupplierDTOForCreate supplierDTO) {
+    public ResponseEntity<Map<String, Object>> addSupplier(@RequestBody SupplierDTOForCreate supplierDTO) {
+        Map<String, Object> response = new HashMap<>();
+
         // Chuyển đổi SupplierDTO thành đối tượng Supplier
         Supplier newSupplier = new Supplier();
         newSupplier.setName(supplierDTO.getName());
@@ -75,9 +78,13 @@ public class SupplierController {
         boolean isAdded = supplierService.addSupplier(newSupplier);
 
         if (isAdded) {
-            return ResponseEntity.ok("Nhà cung cấp đã được thêm thành công");
+            response.put("status", "success");
+            response.put("message", "Nhà cung cấp đã được thêm thành công");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(400).body("Lỗi khi thêm nhà cung cấp");
+            response.put("status", "error");
+            response.put("message", "Lỗi khi thêm nhà cung cấp");
+            return ResponseEntity.badRequest().body(response);
         }
     }
     @GetMapping()
