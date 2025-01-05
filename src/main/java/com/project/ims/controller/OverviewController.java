@@ -43,16 +43,17 @@ public class OverviewController {
         List<TopSupplierDTO> suppliers = overviewService.getTopSuppliersByImports(limit);
         return ResponseEntity.ok(suppliers);
     }
-    @GetMapping("/top-imported")
-    public ResponseEntity<List<ProductStatisticsDTO2>> getTopImportedProducts() {
-        return ResponseEntity.ok(overviewService.getTop10ImportedProducts());
+    @GetMapping("/top-products")
+    public ResponseEntity<List<ProductStatisticsDTO2>> getTopProducts(@RequestParam String type) {
+        if ("import".equalsIgnoreCase(type)) {
+            return ResponseEntity.ok(overviewService.getTop10ImportedProducts());
+        } else if ("export".equalsIgnoreCase(type)) {
+            return ResponseEntity.ok(overviewService.getTop10ExportedProducts());
+        } else {
+            return ResponseEntity.badRequest().build(); // Trả về lỗi 400 nếu type không hợp lệ
+        }
     }
-
-    @GetMapping("/top-exported")
-    public ResponseEntity<List<ProductStatisticsDTO2>> getTopExportedProducts() {
-        return ResponseEntity.ok(overviewService.getTop10ExportedProducts());
-    }
-    @GetMapping("/top-product")
+    @GetMapping("/stat")
     public ResponseEntity<StatisticsDTO> getStatistics() {
         return ResponseEntity.ok(productService.getStatistics());
     }
