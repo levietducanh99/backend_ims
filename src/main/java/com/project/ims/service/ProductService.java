@@ -1,6 +1,7 @@
 package com.project.ims.service;
 
 import com.project.ims.model.dto.ProductDTOForShow;
+import com.project.ims.model.dto.StatisticsDTO;
 import com.project.ims.model.entity.Product;
 import com.project.ims.model.dto.ProductDTO;
 
@@ -22,5 +23,6 @@ public interface ProductService {
 	List<ProductDTOForShow> findAllDTO();
 	List<ProductDTOForShow> searchProducts(String query);
 	List<ProductDTO> getProductsBySupplierSimple(String supplierName);
+	StatisticsDTO getStatistics();
 
 }

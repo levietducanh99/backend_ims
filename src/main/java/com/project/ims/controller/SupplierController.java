@@ -99,5 +99,15 @@ public class SupplierController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<Supplier> updateSupplier(@PathVariable int id, @RequestBody Supplier supplierDetails) {
+        Supplier updatedSupplier = supplierService.updateSupplier(id, supplierDetails);
+        return ResponseEntity.ok(updatedSupplier);
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Supplier> deleteSupplier(@PathVariable int id) {
+        Supplier deletedSupplier = supplierService.deleteSupplier(id);
+        return ResponseEntity.ok(deletedSupplier);
+    }
 }

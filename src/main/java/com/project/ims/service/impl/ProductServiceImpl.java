@@ -2,6 +2,7 @@ package com.project.ims.service.impl;
 
 import com.project.ims.model.dto.ProductDTO;
 import com.project.ims.model.dto.ProductDTOForShow;
+import com.project.ims.model.dto.StatisticsDTO;
 import com.project.ims.model.dto.SupplierDTOForShow;
 import com.project.ims.model.entity.Product;
 import com.project.ims.model.entity.Supplier;
@@ -170,4 +171,13 @@ public class ProductServiceImpl implements ProductService {
                 })
                 .collect(Collectors.toList());
     } 
+    @Override
+    public StatisticsDTO getStatistics() {
+        long totalProducts = productRepository.getTotalProducts();
+        long totalSuppliers = productRepository.getTotalSuppliers();
+        long totalImports = productRepository.getTotalImports();
+        long totalExports = productRepository.getTotalExports();
+
+        return StatisticsDTO.fromNumbers(totalProducts, totalSuppliers, totalImports, totalExports);
+    }
 }

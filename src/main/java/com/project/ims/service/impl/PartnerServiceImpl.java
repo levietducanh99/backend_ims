@@ -73,5 +73,21 @@ public class PartnerServiceImpl implements PartnerService {
     public Optional<Partner> findById(int partnerId) {
         return partnerRepository.findById(partnerId);
     }
+    @Override
+    public Partner updatePartner(int id, Partner partnerDetails) {
+        Partner existingPartner = partnerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Partner with ID " + id + " not found."));
 
+        if (partnerDetails.getName() != null) {
+            existingPartner.setName(partnerDetails.getName());
+        }
+        if (partnerDetails.getContactNumber() != null) {
+            existingPartner.setContactNumber(partnerDetails.getContactNumber());
+        }
+        if (partnerDetails.getAddress() != null) {
+            existingPartner.setAddress(partnerDetails.getAddress());
+        }
+
+        return partnerRepository.save(existingPartner);
+    }
 }

@@ -6,5 +6,6 @@ import lombok.Data;
 public class TopSupplierDTO {
     private int supplierId;
     private String supplierName;
+    private long totalImports;
     private long totalProducts;
 }

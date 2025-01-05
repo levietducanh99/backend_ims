@@ -25,5 +25,17 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     	       "LOWER(p.category) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
     	       "CAST(p.id AS string) LIKE CONCAT('%', :query, '%')")
     	List<Product> searchProducts(@Param("query") String query);
+    
+    @Query("SELECT COUNT(p) FROM Product p")
+    long getTotalProducts();
+
+    @Query("SELECT COUNT(s) FROM Supplier s")
+    long getTotalSuppliers();
+
+    @Query("SELECT COUNT(i) FROM Import i")
+    long getTotalImports();
+
+    @Query("SELECT COUNT(e) FROM Export e")
+    long getTotalExports();
 
 }

@@ -21,4 +21,6 @@ public interface PartnerService {
 	void deletePartner(int partnerID);
 
 	Optional<Partner> findById(int partnerId);
+
+	Partner updatePartner(int id, Partner partnerDetails);
 }

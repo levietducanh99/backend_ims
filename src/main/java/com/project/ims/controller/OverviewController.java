@@ -1,8 +1,12 @@
 package com.project.ims.controller;
 
 import com.project.ims.model.dto.InventoryProductDTO;
+import com.project.ims.model.dto.ProductStatisticsDTO2;
+import com.project.ims.model.dto.StatisticsDTO;
 import com.project.ims.model.dto.TopSupplierDTO;
 import com.project.ims.service.OverviewService;
+import com.project.ims.service.ProductService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +19,8 @@ public class OverviewController {
 
     @Autowired
     private OverviewService overviewService;
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/top-inventory")
     public ResponseEntity<List<InventoryProductDTO>> getTopInventory(
@@ -36,5 +42,18 @@ public class OverviewController {
             @RequestParam(defaultValue = "5") int limit) {
         List<TopSupplierDTO> suppliers = overviewService.getTopSuppliersByImports(limit);
         return ResponseEntity.ok(suppliers);
+    }
+    @GetMapping("/top-imported")
+    public ResponseEntity<List<ProductStatisticsDTO2>> getTopImportedProducts() {
+        return ResponseEntity.ok(overviewService.getTop10ImportedProducts());
+    }
+
+    @GetMapping("/top-exported")
+    public ResponseEntity<List<ProductStatisticsDTO2>> getTopExportedProducts() {
+        return ResponseEntity.ok(overviewService.getTop10ExportedProducts());
+    }
+    @GetMapping("/top-product")
+    public ResponseEntity<StatisticsDTO> getStatistics() {
+        return ResponseEntity.ok(productService.getStatistics());
     }
 }

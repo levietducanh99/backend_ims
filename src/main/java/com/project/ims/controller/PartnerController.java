@@ -69,4 +69,9 @@ public class PartnerController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<Partner> updatePartner(@PathVariable int id, @RequestBody Partner partnerDetails) {
+        Partner updatedPartner = partnerService.updatePartner(id, partnerDetails);
+        return ResponseEntity.ok(updatedPartner);
+    }
 }

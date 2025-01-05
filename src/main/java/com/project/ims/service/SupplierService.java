@@ -22,4 +22,6 @@ public interface SupplierService {
 	List<ProductDTO> getProductsBySupplierSimple(String supplierName);
 	Optional<Supplier> findbyidSupplier(int supplierID);
 	void removeProductFromSupplier(int supplierId, int productId);
+	Supplier updateSupplier(int id, Supplier supplierDetails);
+	Supplier deleteSupplier(int id);
 }

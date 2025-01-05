@@ -1,9 +1,12 @@
 package com.project.ims.service.impl;
 
 import com.project.ims.model.dto.InventoryProductDTO;
+import com.project.ims.model.dto.ProductStatisticsDTO2;
 import com.project.ims.model.dto.TopSupplierDTO;
 import com.project.ims.model.entity.Product;
 import com.project.ims.model.entity.Supplier;
+import com.project.ims.repository.ProductExportRepository;
+import com.project.ims.repository.ProductImportRepository;
 import com.project.ims.repository.ProductRepository;
 import com.project.ims.repository.SupplierRepository;
 import com.project.ims.service.OverviewService;
@@ -27,6 +30,10 @@ public class OverviewServiceImpl implements OverviewService {
 
     @Autowired
     private SupplierRepository supplierRepository;
+    @Autowired
+    private ProductImportRepository productImportRepository;
+    @Autowired
+    private ProductExportRepository productExportRepository;
 
     @Override
     public List<InventoryProductDTO> getTopInventoryProducts(String type, int limit) {
@@ -83,7 +90,7 @@ public class OverviewServiceImpl implements OverviewService {
                     TopSupplierDTO dto = new TopSupplierDTO();
                     dto.setSupplierId(((Number) result[0]).intValue());
                     dto.setSupplierName((String) result[1]);
-                    dto.setTotalProducts(((Number) result[2]).longValue());
+                    dto.setTotalImports(((Number) result[2]).longValue());
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -95,5 +102,13 @@ public class OverviewServiceImpl implements OverviewService {
         dto.setName(product.getProductName().trim());
         dto.setInventoryQuantity(product.getQuantity());
         return dto;
+    }
+    @Override
+    public List<ProductStatisticsDTO2> getTop10ImportedProducts() {
+        return productImportRepository.findTop10ImportedProducts();
+    }
+    @Override
+    public List<ProductStatisticsDTO2> getTop10ExportedProducts() {
+        return productExportRepository.findTop10ExportedProducts();
     }
 }

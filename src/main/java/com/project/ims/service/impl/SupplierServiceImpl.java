@@ -147,5 +147,45 @@ public boolean addSupplier(Supplier supplier) {
     {
     	return supplierRepository.findById(supplierID);
     }
-    
+    @Override
+    public Supplier updateSupplier(int id, Supplier supplierDetails) {
+        Supplier existingSupplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier with ID " + id + " not found."));
+
+        if (supplierDetails.getName() != null) {
+            existingSupplier.setName(supplierDetails.getName());
+        }
+        if (supplierDetails.getContactNumber() != null) {
+            existingSupplier.setContactNumber(supplierDetails.getContactNumber());
+        }
+        if (supplierDetails.getAddress() != null) {
+            existingSupplier.setAddress(supplierDetails.getAddress());
+        }
+
+        return supplierRepository.save(existingSupplier);
+    }
+
+    @Override
+    public Supplier deleteSupplier(int id) {
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + id));
+
+        // Kiểm tra xem nhà cung cấp có sản phẩm nào không
+        if (supplier.getProducts() != null && !supplier.getProducts().isEmpty()) {
+            throw new RuntimeException("Cannot delete supplier because it is associated with products.");
+        }
+
+        // Lưu lại thông tin trước khi xóa
+        Supplier deletedSupplier = new Supplier();
+        deletedSupplier.setSupplierID(supplier.getSupplierID());
+        deletedSupplier.setName(supplier.getName());
+        deletedSupplier.setContactNumber(supplier.getContactNumber());
+        deletedSupplier.setAddress(supplier.getAddress());
+
+        // Xóa nhà cung cấp
+        supplierRepository.deleteById(id);
+
+        return deletedSupplier;
+    }
+
 }
