@@ -44,7 +44,7 @@ public class TransactionController {
 
         // Kiểm tra nếu startDate hoặc endDate là "Invalid date"
         LocalDateTime parsedStartDate = parseDate(startDate, LocalDateTime.of(2024, Month.JANUARY, 1, 0, 0));
-        LocalDateTime parsedEndDate = parseDate(endDate, LocalDateTime.of(2024, Month.DECEMBER, 31, 23, 59));
+        LocalDateTime parsedEndDate = parseDate(endDate, LocalDateTime.now());
 
         // Kiểm tra kiểu giao dịch hợp lệ
         if (type == null || (!"import".equalsIgnoreCase(type) && !"export".equalsIgnoreCase(type))) {
