@@ -16,6 +16,6 @@ public class Import extends BaseTransaction {
     @JoinColumn(name = "supplierID", nullable = false)
     private Supplier supplier;
     
-    @OneToMany(mappedBy = "importEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "importEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProductImport> productImports;
 }

@@ -6,6 +6,7 @@ import com.project.ims.service.ImportService;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,28 +34,44 @@ public class TransactionController {
     }
     @GetMapping("/filter")
     public ResponseEntity<?> filterTransactions(
-        @RequestParam String type,  
-        
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
-        @RequestParam(required = false) Integer supplierId,
-        @RequestParam(required = false) Integer partnerId,
-        @RequestParam(required = false) Integer minProductQuantity,
-        @RequestParam(required = false) Integer maxProductQuantity) {
-    	 // Set default to the current year if startDate or endDate is null
-        if (startDate == null) {
-            startDate = LocalDateTime.of(2024, Month.JANUARY, 1, 0, 0);
+            @RequestParam(required = true) String type,  
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) Integer supplierId,
+            @RequestParam(required = false) Integer partnerId,
+            @RequestParam(required = false) Integer minProductQuantity,
+            @RequestParam(required = false) Integer maxProductQuantity) {
+
+        // Kiểm tra nếu startDate hoặc endDate là "Invalid date"
+        LocalDateTime parsedStartDate = parseDate(startDate, LocalDateTime.of(2024, Month.JANUARY, 1, 0, 0));
+        LocalDateTime parsedEndDate = parseDate(endDate, LocalDateTime.of(2024, Month.DECEMBER, 31, 23, 59));
+
+        // Kiểm tra kiểu giao dịch hợp lệ
+        if (type == null || (!"import".equalsIgnoreCase(type) && !"export".equalsIgnoreCase(type))) {
+            return ResponseEntity.badRequest().body(Map.of("status", "error", "message", "Invalid transaction type"));
         }
-        
-        if (endDate == null) {
-            endDate = LocalDateTime.of(2024, Month.DECEMBER, 31, 23, 59);
+
+        // Kiểm tra minProductQuantity không lớn hơn maxProductQuantity
+        if (minProductQuantity != null && maxProductQuantity != null && minProductQuantity > maxProductQuantity) {
+            return ResponseEntity.badRequest().body(Map.of("status", "error", "message", "minProductQuantity cannot be greater than maxProductQuantity"));
         }
+
+        // Gọi service tương ứng
         if ("import".equalsIgnoreCase(type)) {
-            return ResponseEntity.ok(importService.filterImports(startDate, endDate, supplierId, minProductQuantity, maxProductQuantity));
-        } else if ("export".equalsIgnoreCase(type)) {
-            return ResponseEntity.ok(exportService.filterExports(startDate, endDate, partnerId, minProductQuantity, maxProductQuantity));
+            return ResponseEntity.ok(importService.filterImports(parsedStartDate, parsedEndDate, supplierId, minProductQuantity, maxProductQuantity));
         } else {
-            return ResponseEntity.badRequest().body("Invalid transaction type");
+            return ResponseEntity.ok(exportService.filterExports(parsedStartDate, parsedEndDate, partnerId, minProductQuantity, maxProductQuantity));
+        }
+    }
+ // Hàm chuyển đổi ngày hợp lệ hoặc dùng giá trị mặc định
+    private LocalDateTime parseDate(String dateStr, LocalDateTime defaultDate) {
+        if (dateStr == null || "Invalid date".equalsIgnoreCase(dateStr.trim())) {
+            return defaultDate;
+        }
+        try {
+            return LocalDateTime.parse(dateStr);
+        } catch (Exception e) {
+            return defaultDate;
         }
     }
 

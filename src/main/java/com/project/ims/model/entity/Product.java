@@ -61,7 +61,7 @@ public class Product {
     @OneToMany(mappedBy = "productEntity",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductExport> productExports;
     @JsonIgnore
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Supplier> suppliers;
 }

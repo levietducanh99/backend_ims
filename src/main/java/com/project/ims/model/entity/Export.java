@@ -16,6 +16,6 @@ public class Export extends BaseTransaction {
     @JoinColumn(name = "partnerID", nullable = false)
     private Partner partner;
 
-    @OneToMany(mappedBy = "exportEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "exportEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProductExport> productExports;
 }
