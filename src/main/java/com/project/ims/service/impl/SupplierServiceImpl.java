@@ -34,13 +34,14 @@ public class SupplierServiceImpl implements SupplierService {
     }
 @Override
 //Phương thức để thêm nhà cung cấp vào cơ sở dữ liệu
-public boolean addSupplier(Supplier supplier) {
+public Supplier addSupplier(Supplier supplier) {
     try {
-        supplierRepository.save(supplier);  // Lưu nhà cung cấp vào cơ sở dữ liệu
-        return true;
+     return   supplierRepository.save(supplier);  // Lưu nhà cung cấp vào cơ sở dữ liệu
+      
     } catch (Exception e) {
-        e.printStackTrace();
-        return false;
+    	   // Xử lý ngoại lệ chi tiết hơn, ví dụ: log lỗi, throw custom exception
+        throw new RuntimeException("Lỗi khi thêm đối tác", e);
+       
     }
 }
     @Override

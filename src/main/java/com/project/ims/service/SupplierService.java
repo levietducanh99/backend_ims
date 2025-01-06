@@ -17,7 +17,7 @@ public interface SupplierService {
     List<SupplierProductDTOForShow> getProductsBySupplier(int supplierId);
     void addProductToSupplier(int supplierId, int productId);
     void addProductToSupplier(SupplierDTOForAddProduct request);
-	boolean addSupplier(Supplier supplier);
+	Supplier addSupplier(Supplier supplier);
 	  List<SupplierDTO> findAllSimpleDTO();
 	List<ProductDTO> getProductsBySupplierSimple(String supplierName);
 	Optional<Supplier> findbyidSupplier(int supplierID);

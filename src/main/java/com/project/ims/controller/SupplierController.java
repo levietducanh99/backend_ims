@@ -75,11 +75,12 @@ public class SupplierController {
         newSupplier.setAddress(supplierDTO.getAddress());
 
         // Gọi Service để lưu nhà cung cấp mới vào cơ sở dữ liệu
-        boolean isAdded = supplierService.addSupplier(newSupplier);
+        Supplier savedSupplier = supplierService.addSupplier(newSupplier); 
 
-        if (isAdded) {
+        if (savedSupplier != null) {
             response.put("status", "success");
             response.put("message", "Nhà cung cấp đã được thêm thành công");
+            response.put("supplier", savedSupplier); 
             return ResponseEntity.ok(response);
         } else {
             response.put("status", "error");
