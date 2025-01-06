@@ -49,12 +49,11 @@ public class PartnerController {
         newPartner.setAddress(partnerDTO.getAddress());
 
         // Gọi Service để lưu đối tác mới vào cơ sở dữ liệu
-        Partner savedPartner = partnerService.addPartner(newPartner); 
+        boolean isAdded = partnerService.addPartner(newPartner);
 
-        if (savedPartner != null) {
+        if (isAdded) {
             response.put("success", true);
             response.put("message", "Đối tác đã được thêm thành công");
-            response.put("partner", savedPartner); // Thêm thông tin đối tác đã lưu vào response
             return ResponseEntity.ok(response);
         } else {
             response.put("success", false);
