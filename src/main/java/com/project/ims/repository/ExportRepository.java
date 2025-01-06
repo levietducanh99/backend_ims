@@ -14,7 +14,7 @@ public interface ExportRepository extends JpaRepository<Export, Integer> {
     @Query("SELECT e FROM Export e WHERE e.createDate BETWEEN :startDate AND :endDate " +
             "AND (:partnerId IS NULL OR e.partner.partnerID = :partnerId) " +
             "AND (:minProductQuantity IS NULL OR e.totalQuantity >= :minProductQuantity) " +
-            "AND (:maxProductQuantity IS NULL OR e.totalQuantity <= :maxProductQuantity)")
+            "AND (:maxProductQuantity IS NULL OR e.totalQuantity <= :maxProductQuantity)" + "ORDER BY e.createDate DESC")
      List<Export> findFilteredExports(LocalDateTime startDate, LocalDateTime endDate, Integer partnerId, Integer minProductQuantity, Integer maxProductQuantity);
     @Query("SELECT e FROM Export e JOIN e.productExports pe WHERE pe.productEntity.id = :productId")
     List<Export> findByProductId(int productId);
