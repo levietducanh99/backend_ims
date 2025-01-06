@@ -161,7 +161,7 @@ public class ExportServiceImpl implements ExportService {
         return result;
     }
     @Override
-    public List<FilterExportDTO> filterExports(LocalDateTime startDate, LocalDateTime endDate, int partnerId, Integer minProductQuantity, Integer maxProductQuantity) {
+    public List<FilterExportDTO> filterExports(LocalDateTime startDate, LocalDateTime endDate, Integer partnerId, Integer minProductQuantity, Integer maxProductQuantity) {
         return exportRepository.findFilteredExports(startDate, endDate, partnerId, minProductQuantity, maxProductQuantity)
             .stream()
             .map(exportEntity -> {

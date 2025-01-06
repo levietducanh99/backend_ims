@@ -19,6 +19,6 @@ public interface ExportService {
 
 	ExportDTO getExportDetails(int exportID);
 
-	List<FilterExportDTO> filterExports(LocalDateTime startDate, LocalDateTime endDate, int partnerId,
+	List<FilterExportDTO> filterExports(LocalDateTime startDate, LocalDateTime endDate, Integer partnerId,
 			Integer minProductQuantity, Integer maxProductQuantity);
 }

@@ -37,8 +37,8 @@ public class TransactionController {
         
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
-        @RequestParam(required = false) int supplierId,
-        @RequestParam(required = false) int partnerId,
+        @RequestParam(required = false) Integer supplierId,
+        @RequestParam(required = false) Integer partnerId,
         @RequestParam(required = false) Integer minProductQuantity,
         @RequestParam(required = false) Integer maxProductQuantity) {
     	 // Set default to the current year if startDate or endDate is null
