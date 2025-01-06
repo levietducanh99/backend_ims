@@ -4,8 +4,11 @@ import com.project.ims.model.dto.ProductDTO;
 import com.project.ims.model.dto.ProductDTOForShow;
 import com.project.ims.model.dto.StatisticsDTO;
 import com.project.ims.model.dto.SupplierDTOForShow;
+import com.project.ims.model.dto.TransactionHistoryDTO;
 import com.project.ims.model.entity.Product;
 import com.project.ims.model.entity.Supplier;
+import com.project.ims.repository.ExportRepository;
+import com.project.ims.repository.ImportRepository;
 import com.project.ims.repository.ProductRepository;
 import com.project.ims.repository.SupplierRepository;
 import com.project.ims.service.ProductService;
@@ -31,6 +34,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private SupplierRepository supplierRepository;
+    @Autowired
+    private ImportRepository importRepository;
+    @Autowired
+    private ExportRepository exportRepository;
 
     @Override
     @Transactional
@@ -180,4 +187,45 @@ public class ProductServiceImpl implements ProductService {
 
         return StatisticsDTO.fromNumbers(totalProducts, totalSuppliers, totalImports, totalExports);
     }
+    @Override
+    public List<TransactionHistoryDTO> getProductTransactionHistory(int productId) {
+        if (!productRepository.existsById(productId)) {
+            throw new RuntimeException("Product not found with ID: " + productId);
+        }
+
+        // Lấy lịch sử nhập
+        List<TransactionHistoryDTO> importHistory = importRepository.findByProductId(productId)
+            .stream()
+            .flatMap(importTransaction -> importTransaction.getProductImports().stream()
+                .filter(pi -> pi.getProductEntity().getProductID() == productId)
+                .map(pi -> new TransactionHistoryDTO(
+                    "import",
+                    importTransaction.getImportID(),
+                    pi.getProductEntity().getProductName(),
+                    productId,
+                    pi.getQuantity()
+                ))
+            )
+            .collect(Collectors.toList());
+
+        // Lấy lịch sử xuất
+        List<TransactionHistoryDTO> exportHistory = exportRepository.findByProductId(productId)
+            .stream()
+            .flatMap(exportTransaction -> exportTransaction.getProductExports().stream()
+                .filter(pe -> pe.getProductEntity().getProductID() == productId)
+                .map(pe -> new TransactionHistoryDTO(
+                    "export",
+                    exportTransaction.getExportID(),
+                    pe.getProductEntity().getProductName(),
+                    productId,
+                    pe.getQuantity()
+                ))
+            )
+            .collect(Collectors.toList());
+
+        // Gộp danh sách nhập và xuất
+        importHistory.addAll(exportHistory);
+        return importHistory;
+    }
+    
 }

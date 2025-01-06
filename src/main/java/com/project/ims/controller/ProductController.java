@@ -1,6 +1,7 @@
 package com.project.ims.controller;
 
 import com.project.ims.model.dto.ProductDTOForShow;
+import com.project.ims.model.dto.TransactionHistoryDTO;
 import com.project.ims.model.entity.Product;
 import com.project.ims.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +71,10 @@ public class ProductController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+    @GetMapping("/{productId}/history")
+    public ResponseEntity<List<TransactionHistoryDTO>> getProductTransactionHistory(@PathVariable int productId) {
+        List<TransactionHistoryDTO> history = productService.getProductTransactionHistory(productId);
+        return ResponseEntity.ok(history);
     }
 }

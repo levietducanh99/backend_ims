@@ -16,5 +16,7 @@ public interface ExportRepository extends JpaRepository<Export, Integer> {
             "AND (:minProductQuantity IS NULL OR e.totalQuantity >= :minProductQuantity) " +
             "AND (:maxProductQuantity IS NULL OR e.totalQuantity <= :maxProductQuantity)")
      List<Export> findFilteredExports(LocalDateTime startDate, LocalDateTime endDate, Integer partnerId, Integer minProductQuantity, Integer maxProductQuantity);
- }
+    @Query("SELECT e FROM Export e JOIN e.productExports pe WHERE pe.productEntity.id = :productId")
+    List<Export> findByProductId(int productId);
+}
 

@@ -16,4 +16,6 @@ public interface ImportRepository extends JpaRepository<Import, Integer> {
             "AND (:minProductQuantity IS NULL OR i.totalQuantity >= :minProductQuantity) " +
             "AND (:maxProductQuantity IS NULL OR i.totalQuantity <= :maxProductQuantity)")
      List<Import> findFilteredImports(LocalDateTime startDate, LocalDateTime endDate, Integer supplierId, Integer minProductQuantity, Integer maxProductQuantity);
+    @Query("SELECT i FROM Import i JOIN i.productImports pi WHERE pi.productEntity.id = :productId")
+    List<Import> findByProductId(int productId);
  }
